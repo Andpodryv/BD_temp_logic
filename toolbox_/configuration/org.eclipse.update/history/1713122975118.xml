@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config date="1713122975118" transient="false" version="3.0">
+<site enabled="true" policy="USER-EXCLUDE" updateable="true" url="platform:/base/">
+<feature id="org.eclipse.help" plugin-identifier="org.eclipse.help.base" url="features/org.eclipse.help_2.3.200.v20200604-0540/" version="2.3.200.v20200604-0540">
+</feature>
+<feature id="org.lamport.tla.toolbox.feature.tlc" url="features/org.lamport.tla.toolbox.feature.tlc_1.0.0.202012311918/" version="1.0.0.202012311918">
+</feature>
+<feature id="org.lamport.tla.toolbox.feature.branding" url="features/org.lamport.tla.toolbox.feature.branding_1.0.0.202012311918/" version="1.0.0.202012311918">
+</feature>
+<feature id="org.lamport.tla.toolbox.feature.tla2tex" url="features/org.lamport.tla.toolbox.feature.tla2tex_1.0.0.202012311918/" version="1.0.0.202012311918">
+</feature>
+<feature id="org.eclipse.emf.common" url="features/org.eclipse.emf.common_2.19.0.v20200324-0932/" version="2.19.0.v20200324-0932">
+</feature>
+<feature id="org.eclipse.equinox.p2.core.feature" url="features/org.eclipse.equinox.p2.core.feature_1.6.600.v20200511-1530/" version="1.6.600.v20200511-1530">
+</feature>
+<feature id="org.eclipse.ecf.core.ssl.feature" url="features/org.eclipse.ecf.core.ssl.feature_1.1.400.v20200317-1602/" version="1.1.400.v20200317-1602">
+</feature>
+<feature id="org.eclipse.ecf.filetransfer.ssl.feature" url="features/org.eclipse.ecf.filetransfer.ssl.feature_1.1.300.v20200317-1602/" version="1.1.300.v20200317-1602">
+</feature>
+<feature id="org.lamport.tla.toolbox.feature.jnlp" plugin-identifier="org.lamport.tla.toolbox.jnlp" url="features/org.lamport.tla.toolbox.feature.jnlp_1.0.0.202012311918/" version="1.0.0.202012311918">
+</feature>
+<feature id="org.lamport.tla.toolbox.feature.jclouds" plugin-identifier="org.lamport.tla.toolbox.jclouds" url="features/org.lamport.tla.toolbox.feature.jclouds_1.0.0.202012311918/" version="1.0.0.202012311918">
+</feature>
+<feature id="org.lamport.tla.toolbox.feature.help" url="features/org.lamport.tla.toolbox.feature.help_1.0.0.202012311918/" version="1.0.0.202012311918">
+</feature>
+<feature id="org.eclipse.emf.ecore" url="features/org.eclipse.emf.ecore_2.22.0.v20200519-1135/" version="2.22.0.v20200519-1135">
+</feature>
+<feature id="org.lamport.tla.toolbox.feature.prover" plugin-identifier="org.lamport.tla.toolbox.tool.prover" url="features/org.lamport.tla.toolbox.feature.prover_1.0.0.202012311918/" version="1.0.0.202012311918">
+</feature>
+<feature id="org.lamport.openjdk.feature" url="features/org.lamport.openjdk.feature_14.0.1.7/" version="14.0.1.7">
+</feature>
+<feature id="org.lamport.tla.toolbox.feature.base" plugin-identifier="org.lamport.tla.toolbox" url="features/org.lamport.tla.toolbox.feature.base_1.0.0.202012311918/" version="1.0.0.202012311918">
+</feature>
+<feature id="org.eclipse.ecf.filetransfer.httpclient45.feature" url="features/org.eclipse.ecf.filetransfer.httpclient45.feature_1.0.400.v20200522-1203/" version="1.0.400.v20200522-1203">
+</feature>
+<feature id="org.eclipse.ecf.core.feature" url="features/org.eclipse.ecf.core.feature_1.5.600.v20200317-1602/" version="1.5.600.v20200317-1602">
+</feature>
+<feature id="org.eclipse.rcp" url="features/org.eclipse.rcp_4.16.0.v20200604-0951/" version="4.16.0.v20200604-0951">
+</feature>
+<feature id="org.eclipse.equinox.p2.rcp.feature" url="features/org.eclipse.equinox.p2.rcp.feature_1.4.800.v20200602-1138/" version="1.4.800.v20200602-1138">
+</feature>
+<feature id="org.eclipse.ecf.filetransfer.feature" url="features/org.eclipse.ecf.filetransfer.feature_3.14.800.v20200317-1602/" version="3.14.800.v20200317-1602">
+</feature>
+<feature id="org.apache.jclouds.feature" url="features/org.apache.jclouds.feature_2.1.2.5/" version="2.1.2.5">
+</feature>
+<feature id="org.lamport.tla.toolbox.feature.standalone" plugin-identifier="org.lamport.tla.toolbox.product.standalone" url="features/org.lamport.tla.toolbox.feature.standalone_1.0.0.202012311918/" version="1.0.0.202012311918">
+</feature>
+<feature id="de.vonloesch.pdf4eclipse.feature" url="features/de.vonloesch.pdf4eclipse.feature_1.1.0.201907070246/" version="1.1.0.201907070246">
+</feature>
+<feature id="org.lamport.tla.toolbox.feature.editor" plugin-identifier="org.lamport.tla.toolbox.editor.basic" url="features/org.lamport.tla.toolbox.feature.editor_1.0.0.202012311918/" version="1.0.0.202012311918">
+</feature>
+<feature id="org.eclipse.recommenders.news.rcp.feature" plugin-identifier="org.eclipse.recommenders.news" url="features/org.eclipse.recommenders.news.rcp.feature_2.5.4.v20180909-1132/" version="2.5.4.v20180909-1132">
+</feature>
+<feature id="org.eclipse.e4.rcp" url="features/org.eclipse.e4.rcp_4.16.0.v20200604-0951/" version="4.16.0.v20200604-0951">
+</feature>
+<feature id="com.abstratt.eclipsegraphviz.feature" url="features/com.abstratt.eclipsegraphviz.feature_2.5.201812/" version="2.5.201812">
+</feature>
+</site>
+</config>

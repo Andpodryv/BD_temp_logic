@@ -1,0 +1,9 @@
+Manifest-Version: 1.0
+Created-By: 11.0.3 (Azul Systems, Inc.)
+
+Name: icon.xpm
+SHA-256-Digest: 3ErEMJkXKrslNUGUnjdQPf3y8g5u4SLx1/rrG3wqG9o=
+
+Name: toolbox
+SHA-256-Digest: WFsuxp/YER4RJ002NCq34IpArJTJPKCaz77qX1WvUKY=
+

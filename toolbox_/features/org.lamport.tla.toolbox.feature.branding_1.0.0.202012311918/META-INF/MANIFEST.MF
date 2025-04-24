@@ -1,0 +1,14 @@
+Manifest-Version: 1.0
+Created-By: Apache Maven 3.6.3
+Built-By: runner
+Build-Jdk: 11.0.3
+
+Name: rootfiles/splash.bmp
+SHA-256-Digest: bImvfS7mU8axReaZJtSXwD1Lwuhix0PWn6qToDfAz/Y=
+
+Name: build.properties
+SHA-256-Digest: eQKaUWb9G5ELiBAIa9Wew6WK5YnTT3Z5h/XfhK6xM7c=
+
+Name: feature.xml
+SHA-256-Digest: 9RGabsKW8Waza5F7rm+K7y7lcODORtgX1IEA1M9vJJU=
+

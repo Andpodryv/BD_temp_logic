@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feature
+      id="org.lamport.tla.toolbox.feature.base"
+      label="TLA+ Toolbox Base Feature"
+      version="1.0.0.202012311918"
+      provider-name="Simon Zambrovski, Leslie Lamport"
+      plugin="org.lamport.tla.toolbox">
+
+   <description>
+      This feature defines the set of plug-ins that are required to run the base of the TLA+ Toolbox.
+   </description>
+
+   <plugin
+         id="org.lamport.tlatools"
+         download-size="3003"
+         install-size="7637"
+         version="1.0.0.202012311918"/>
+         
+   <plugin
+         id="org.lamport.tla.toolbox"
+         download-size="385"
+         install-size="842"
+         version="1.0.0.202012311918"/>
+
+   <plugin
+         id="org.eclipse.core.resources"
+         download-size="873"
+         install-size="1904"
+         version="3.13.700.v20200209-1624"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.core.filesystem"
+         download-size="65"
+         install-size="122"
+         version="1.7.700.v20200110-1734"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.ui.ide"
+         download-size="2425"
+         install-size="4834"
+         version="3.17.100.v20200530-0835"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.ui.forms"
+         download-size="324"
+         install-size="653"
+         version="3.9.100.v20200413-1417"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.ui.views"
+         download-size="105"
+         install-size="191"
+         version="3.10.300.v20200311-1018"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.jface.text"
+         download-size="1025"
+         install-size="2192"
+         version="3.16.300.v20200526-0811"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.text"
+         download-size="289"
+         install-size="583"
+         version="3.10.200.v20200428-0633"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.ui.views.properties.tabbed"
+         download-size="107"
+         install-size="224"
+         version="3.8.900.v20200513-0930"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.ui.intro"
+         download-size="338"
+         install-size="668"
+         version="3.5.1000.v20200525-1037"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.ui.navigator"
+         download-size="418"
+         install-size="897"
+         version="3.9.300.v20200513-0930"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.ui"
+         download-size="467"
+         install-size="578"
+         version="3.117.0.v20200518-1705"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.ui.intro.universal"
+         download-size="2145"
+         install-size="2745"
+         version="3.3.900.v20200330-1059"/>
+
+<license url="">
+      MIT License
+
+Copyright (c) 2018 Microsoft Corporation
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the &amp;quot;Software&amp;quot;), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED &amp;quot;AS IS&amp;quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+   </license></feature>

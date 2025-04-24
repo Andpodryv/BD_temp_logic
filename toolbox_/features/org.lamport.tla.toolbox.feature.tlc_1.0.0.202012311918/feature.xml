@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feature
+      id="org.lamport.tla.toolbox.feature.tlc"
+      label="TLA+ Toolbox TLC Tool Feature"
+      version="1.0.0.202012311918"
+      provider-name="Yuan Yu, Leslie Lamport, Simon Zambrovski">
+
+   <description>
+      This feature contains all parts needed the TLC model checker.
+   </description>
+
+   <plugin
+         id="org.lamport.tla.toolbox.tool.tlc"
+         download-size="136"
+         install-size="287"
+         version="1.0.0.202012311918"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.debug.core"
+         download-size="380"
+         install-size="797"
+         version="3.15.100.v20200514-0816"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.ui.console"
+         download-size="207"
+         install-size="384"
+         version="3.9.200.v20200511-1122"
+         unpack="false"/>
+
+   <plugin
+         id="org.lamport.tla.toolbox.tool.tlc.ui"
+         download-size="855"
+         install-size="1622"
+         version="1.0.0.202012311918"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.ui.navigator"
+         download-size="418"
+         install-size="897"
+         version="3.9.300.v20200513-0930"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.jdt.launching"
+         download-size="547"
+         install-size="1058"
+         version="3.17.100.v20200526-1503"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.jdt.core"
+         download-size="6995"
+         install-size="16358"
+         version="3.22.0.v20200530-2032"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.jdt.debug"
+         download-size="967"
+         install-size="1081"
+         version="3.15.100.v20200525-2012"/>
+
+   <plugin
+         id="org.eclipse.core.variables"
+         download-size="35"
+         install-size="65"
+         version="3.4.800.v20200120-1101"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.jdt.launching.macosx"
+         os="macosx"
+         download-size="19"
+         install-size="30"
+         version="3.4.500.v20200116-2251"
+         unpack="false"/>
+
+   <plugin
+         id="javax.mail"
+         download-size="314"
+         install-size="589"
+         version="1.4.0.v201005080615"
+         unpack="false"/>
+
+   <plugin
+         id="javax.activation"
+         download-size="53"
+         install-size="104"
+         version="1.1.0.v201211130549"
+         unpack="false"/>
+
+<license url="">
+      MIT License
+
+Copyright (c) 2018 Microsoft Corporation
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the &amp;quot;Software&amp;quot;), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED &amp;quot;AS IS&amp;quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+   </license></feature>

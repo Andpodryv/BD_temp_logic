@@ -1,0 +1,15 @@
+Signature-Version: 1.0
+Created-By: 11.0.3 (Azul Systems, Inc.)
+SHA-256-Digest-Manifest: mChegZOt6sEMb4atLO2vNix66iFNdwjF00T3zdDLbUc=
+SHA-256-Digest-Manifest-Main-Attributes: nEJRrdWXaDIXlRkYNUoait4iMNgkeVT
+ QX+4EelfM/AI=
+
+Name: rootfiles/splash.bmp
+SHA-256-Digest: f8RmCR87K6L+g9NKHrpA0DuYYrIzhZtzkFdKbrVzgKs=
+
+Name: build.properties
+SHA-256-Digest: NUCrIFktJOd4wzt4TnEYJcq5v21poi0MvEPalAbn+Zg=
+
+Name: feature.xml
+SHA-256-Digest: putm6i/jLH4A57tZMYqJ6LKEBzXyHl9NkVBRkY99vMQ=
+

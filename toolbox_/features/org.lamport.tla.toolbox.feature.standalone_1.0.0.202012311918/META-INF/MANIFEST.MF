@@ -1,0 +1,11 @@
+Manifest-Version: 1.0
+Created-By: Apache Maven 3.6.3
+Built-By: runner
+Build-Jdk: 11.0.3
+
+Name: build.properties
+SHA-256-Digest: 7yCTtXv/ZnrWg4R5RBjdrBZ43d7+3U1hmTeLx6oB6CI=
+
+Name: feature.xml
+SHA-256-Digest: 92bYC0vEDUobfbalJJv0XCBh5TNYLWCsEqNrBjf5q1g=
+

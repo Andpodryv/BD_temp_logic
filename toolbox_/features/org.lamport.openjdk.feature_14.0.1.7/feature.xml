@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feature
+      id="org.lamport.openjdk.feature"
+      label="OpenJDK JVM"
+      version="14.0.1.7"
+      provider-name="Microsoft Research, Oracle, loki der quaeler">
+
+   <description url="http://lemmy.github.com/eclipse-jdk-bundles/">
+      OpenJDK JVM provides a platform specific (Linux, Mac, Windows for x86_64) feature and p2 touchpoint instruction for installing a JVM into the underlying RCP.
+   </description>
+
+   <url>
+      <update label="OpenJDK JVM update site" url="http://lemmy.github.com/eclipse-jdk-bundles/"/>
+   </url>
+
+   <plugin
+         id="org.lamport.openjdk.linux.x86_64"
+         version="14.0.1.7"
+         optional="true"
+         os="linux"
+         arch="x86_64"
+         unpack="true" download-size="56020" install-size="163578"/>
+
+   <plugin
+         id="org.lamport.openjdk.macosx.x86_64"
+         version="14.0.1.7"
+         optional="true"
+         os="macosx"
+         arch="x86_64"
+         unpack="true" download-size="49070" install-size="143931"/>
+
+   <plugin
+         id="org.lamport.openjdk.win32.x86_64"
+         version="14.0.1.7"
+         optional="true"
+         os="win32"
+         arch="x86_64"
+         unpack="true" download-size="52413" install-size="149502"/>
+
+</feature>

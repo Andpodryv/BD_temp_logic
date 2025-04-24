@@ -1,0 +1,9 @@
+eclipse.preferences.version=1
+repositories/http\:__lamport.org_tlatoolbox_branches_1.7.1_toolboxUpdate/count=1
+repositories/http\:__lamport.org_tlatoolbox_branches_1.7.1_toolboxUpdate/enabled=true
+repositories/http\:__lamport.org_tlatoolbox_branches_1.7.1_toolboxUpdate/isSystem=false
+repositories/http\:__lamport.org_tlatoolbox_branches_1.7.1_toolboxUpdate/uri=http\://lamport.org/tlatoolbox/branches/1.7.1/toolboxUpdate/
+repositories/http\:__lamport.org_tlatoolbox_ci_toolboxUpdate/count=1
+repositories/http\:__lamport.org_tlatoolbox_ci_toolboxUpdate/enabled=false
+repositories/http\:__lamport.org_tlatoolbox_ci_toolboxUpdate/isSystem=false
+repositories/http\:__lamport.org_tlatoolbox_ci_toolboxUpdate/uri=http\://lamport.org/tlatoolbox/ci/toolboxUpdate/

@@ -1,0 +1,47 @@
+@!@!@STARTMSG 2262:0 @!@!@
+TLC2 Version 2.20 of Day Month 20?? (rev: 13e5a39)
+@!@!@ENDMSG 2262 @!@!@
+@!@!@STARTMSG 2187:0 @!@!@
+Running breadth-first search Model-Checking with fp 20 and seed -3280269016246974262 with 8 workers on 8 cores with 2837MB heap and 6380MB offheap memory [pid: 200225] (Linux 5.15.0-136-generic amd64, AdoptOpenJDK 14.0.1 x86_64, OffHeapDiskFPSet, DiskStateQueue).
+@!@!@ENDMSG 2187 @!@!@
+@!@!@STARTMSG 2220:0 @!@!@
+Starting SANY...
+@!@!@ENDMSG 2220 @!@!@
+Parsing file /home/user/Desktop/DIPLOM/Kripke/Kripke.toolbox/Model_1/MC.tla
+Parsing file /home/user/Desktop/DIPLOM/Kripke/Kripke.toolbox/Model_1/main.tla
+Parsing file /home/user/Desktop/DIPLOM/Kripke/toolbox/plugins/org.lamport.tlatools_1.0.0.202504151343/tla2sany/StandardModules/TLC.tla
+Parsing file /home/user/Desktop/DIPLOM/Kripke/toolbox/plugins/org.lamport.tlatools_1.0.0.202504151343/tla2sany/StandardModules/Sequences.tla
+Parsing file /home/user/Desktop/DIPLOM/Kripke/toolbox/plugins/org.lamport.tlatools_1.0.0.202504151343/tla2sany/StandardModules/FiniteSets.tla
+Parsing file /home/user/Desktop/DIPLOM/Kripke/toolbox/plugins/org.lamport.tlatools_1.0.0.202504151343/tla2sany/StandardModules/Integers.tla
+Parsing file /home/user/Desktop/DIPLOM/Kripke/toolbox/plugins/org.lamport.tlatools_1.0.0.202504151343/tla2sany/StandardModules/Naturals.tla
+Semantic processing of module Naturals
+Semantic processing of module Sequences
+Semantic processing of module FiniteSets
+Semantic processing of module TLC
+Semantic processing of module Integers
+Semantic processing of module main
+Semantic processing of module MC
+@!@!@STARTMSG 2219:0 @!@!@
+SANY finished.
+@!@!@ENDMSG 2219 @!@!@
+@!@!@STARTMSG 2185:0 @!@!@
+Starting... (2025-04-21 09:36:03)
+@!@!@ENDMSG 2185 @!@!@
+@!@!@STARTMSG 2212:0 @!@!@
+Implied-temporal checking--satisfiability problem has 1 branches.
+@!@!@ENDMSG 2212 @!@!@
+@!@!@STARTMSG 2189:0 @!@!@
+Computing initial states...
+@!@!@ENDMSG 2189 @!@!@
+@!@!@STARTMSG 2190:0 @!@!@
+Finished computing initial states: 1 distinct state generated at 2025-04-21 09:36:04.
+@!@!@ENDMSG 2190 @!@!@
+@!@!@STARTMSG 2192:0 @!@!@
+Checking temporal properties for the current state space with 22446 total distinct states at (2025-04-21 09:36:07)
+@!@!@ENDMSG 2192 @!@!@
+@!@!@STARTMSG 2267:0 @!@!@
+Finished checking temporal properties in 00s at 2025-04-21 09:36:07
+@!@!@ENDMSG 2267 @!@!@
+@!@!@STARTMSG 2200:0 @!@!@
+Progress(296) at 2025-04-21 09:36:07: 606,206 states generated (606,206 s/min), 22,596 distinct states found (22,596 ds/min), 150 states left on queue.
+@!@!@ENDMSG 2200 @!@!@

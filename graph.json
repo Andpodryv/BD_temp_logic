@@ -1,0 +1,297 @@
+{
+  "nodes": [
+    {
+      "id": 0,
+      "label": "RawDB",
+      "properties": [
+        "source=raw",
+        "received"
+      ],
+      "outgoing_edges": [
+        1
+      ]
+    },
+    {
+      "id": 1,
+      "label": "Нормализация",
+      "properties": [
+        "normalized"
+      ],
+      "outgoing_edges": [
+        2
+      ]
+    },
+    {
+      "id": 2,
+      "label": "Фильтрация",
+      "properties": [
+        "filtered"
+      ],
+      "outgoing_edges": [
+        3,
+        7,
+        10,
+        13
+      ]
+    },
+    {
+      "id": 3,
+      "label": "SCADA: Извлечение тэгов",
+      "properties": [
+        "type=scada",
+        "tags_extracted"
+      ],
+      "outgoing_edges": [
+        4
+      ]
+    },
+    {
+      "id": 4,
+      "label": "SCADA: Проверка сигналов",
+      "properties": [
+        "type=scada",
+        "validated"
+      ],
+      "outgoing_edges": [
+        5
+      ]
+    },
+    {
+      "id": 5,
+      "label": "SCADA: Агрегация",
+      "properties": [
+        "type=scada",
+        "aggregated"
+      ],
+      "outgoing_edges": [
+        5,
+        6
+      ]
+    },
+    {
+      "id": 6,
+      "label": "SCADA: сохранение в Cassandra",
+      "properties": [
+        "type=scada",
+        "stored",
+        "db=cassandra"
+      ],
+      "outgoing_edges": [
+        16,
+        18,
+        17
+      ]
+    },
+    {
+      "id": 7,
+      "label": "PII: Анонимизация",
+      "properties": [
+        "type=pii",
+        "anonymized"
+      ],
+      "outgoing_edges": [
+        8
+      ]
+    },
+    {
+      "id": 8,
+      "label": "PII: Проверка политик",
+      "properties": [
+        "type=pii",
+        "checked"
+      ],
+      "outgoing_edges": [
+        7,
+        9
+      ]
+    },
+    {
+      "id": 9,
+      "label": "PII: сохранение в MongoDB",
+      "properties": [
+        "type=pii",
+        "stored",
+        "db=mongodb"
+      ],
+      "outgoing_edges": [
+        22,
+        23,
+        24
+      ]
+    },
+    {
+      "id": 10,
+      "label": "Логи: Разбор",
+      "properties": [
+        "type=log",
+        "logs_parsed"
+      ],
+      "outgoing_edges": [
+        11
+      ]
+    },
+    {
+      "id": 11,
+      "label": "Логи: Анализ",
+      "properties": [
+        "type=log",
+        "analyzed"
+      ],
+      "outgoing_edges": [
+        20,
+        12
+      ]
+    },
+    {
+      "id": 12,
+      "label": "Логи: MongoDB",
+      "properties": [
+        "type=log",
+        "stored",
+        "db=mongodb"
+      ],
+      "outgoing_edges": [
+        19
+      ]
+    },
+    {
+      "id": 13,
+      "label": "Изобр.: Сжатие",
+      "properties": [
+        "type=image",
+        "compressed"
+      ],
+      "outgoing_edges": [
+        14
+      ]
+    },
+    {
+      "id": 14,
+      "label": "Изобр.: Разметка ИИ",
+      "properties": [
+        "type=image",
+        "ai_marked"
+      ],
+      "outgoing_edges": [
+        15
+      ]
+    },
+    {
+      "id": 15,
+      "label": "Изобр.: сохранение в Cassandra",
+      "properties": [
+        "type=image",
+        "stored",
+        "db=cassandra"
+      ],
+      "outgoing_edges": [
+        21
+      ]
+    },
+    {
+      "id": 16,
+      "label": "SCADA: Архив в HDFS",
+      "properties": [
+        "type=scada",
+        "archived",
+        "storage=hdfs"
+      ],
+      "outgoing_edges": []
+    },
+    {
+      "id": 17,
+      "label": "SCADA: отправка отчетов в офис",
+      "properties": [
+        "type=scada",
+        "reported",
+        "target=office"
+      ],
+      "outgoing_edges": []
+    },
+    {
+      "id": 18,
+      "label": "SCADA: Дашборд на завод",
+      "properties": [
+        "type=scada",
+        "visualized",
+        "target=plant"
+      ],
+      "outgoing_edges": []
+    },
+    {
+      "id": 19,
+      "label": "Логи: отправка IT отдел",
+      "properties": [
+        "type=log",
+        "reported",
+        "target=office"
+      ],
+      "outgoing_edges": [
+        11
+      ]
+    },
+    {
+      "id": 20,
+      "label": "Логи: архив в MongoDB",
+      "properties": [
+        "type=log",
+        "archived",
+        "db=mongodb"
+      ],
+      "outgoing_edges": []
+    },
+    {
+      "id": 21,
+      "label": "Изобр.: архив в Glacier",
+      "properties": [
+        "type=image",
+        "archived",
+        "storage=glacier"
+      ],
+      "outgoing_edges": []
+    },
+    {
+      "id": 22,
+      "label": "PII: Юр. экспорт",
+      "properties": [
+        "type=pii",
+        "exported",
+        "target=legal"
+      ],
+      "outgoing_edges": []
+    },
+    {
+      "id": 23,
+      "label": "PII: Доступ пользов.",
+      "properties": [
+        "type=pii",
+        "access_granted",
+        "target=users"
+      ],
+      "outgoing_edges": []
+    },
+    {
+      "id": 24,
+      "label": "PII: Архив в PostgreSQL",
+      "properties": [
+        "type=pii",
+        "archived",
+        "db=postgresql"
+      ],
+      "outgoing_edges": [
+        25
+      ]
+    },
+    {
+      "id": 25,
+      "label": "PII: удаление устаревших и вышедших из срока хранения данных",
+      "properties": [
+        "type=pii",
+        "expired_deleted"
+      ],
+      "outgoing_edges": [
+        24
+      ]
+    }
+  ]
+}

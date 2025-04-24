@@ -1,0 +1,365 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feature
+      id="org.lamport.tla.toolbox.feature.standalone"
+      label="TLA+ Toolbox Standalone Feature"
+      version="1.0.0.202012311918"
+      provider-name="Simon Zambrovski, Leslie Lamport"
+      plugin="org.lamport.tla.toolbox.product.standalone">
+
+   <description>
+      This feature is a top feature included in the stand-alone product definition. It refers to other featuers required in runtime and uses as an assembly point for the stand-alone TLA+ Toolbox.
+   </description>
+
+   <includes
+         id="org.lamport.tla.toolbox.feature.base"
+         version="1.0.0.202012311918"/>
+
+   <includes
+         id="org.lamport.tla.toolbox.feature.editor"
+         version="1.0.0.202012311918"/>
+
+   <includes
+         id="org.lamport.tla.toolbox.feature.help"
+         version="1.0.0.202012311918"/>
+
+   <includes
+         id="org.lamport.tla.toolbox.feature.tlc"
+         version="1.0.0.202012311918"/>
+
+   <includes
+         id="org.eclipse.rcp"
+         version="4.16.0.v20200604-0951"/>
+
+   <includes
+         id="org.eclipse.help"
+         version="2.3.200.v20200604-0540"/>
+
+   <includes
+         id="org.lamport.tla.toolbox.feature.tla2tex"
+         version="1.0.0.202012311918"/>
+
+   <includes
+         id="org.lamport.tla.toolbox.feature.prover"
+         version="1.0.0.202012311918"/>
+
+   <includes
+         id="org.lamport.tla.toolbox.feature.jnlp"
+         version="1.0.0.202012311918"/>
+
+   <includes
+         id="org.lamport.tla.toolbox.feature.branding"
+         version="1.0.0.202012311918"/>
+
+   <includes
+         id="org.eclipse.e4.rcp"
+         version="4.16.0.v20200604-0951"/>
+
+   <includes
+         id="org.eclipse.emf.common"
+         version="2.19.0.v20200324-0932"/>
+
+   <includes
+         id="org.eclipse.emf.ecore"
+         version="2.22.0.v20200519-1135"/>
+
+   <includes
+         id="de.vonloesch.pdf4eclipse.feature"
+         version="1.1.0.201907070246"/>
+
+   <includes
+         id="org.lamport.openjdk.feature"
+         version="14.0.1.7"/>
+
+   <includes
+         id="org.eclipse.ecf.core.feature"
+         version="1.5.600.v20200317-1602"/>
+
+   <includes
+         id="org.eclipse.ecf.filetransfer.feature"
+         version="3.14.800.v20200317-1602"/>
+
+   <includes
+         id="org.eclipse.equinox.p2.rcp.feature"
+         version="1.4.800.v20200602-1138"/>
+
+   <includes
+         id="org.eclipse.ecf.core.ssl.feature"
+         version="1.1.400.v20200317-1602"/>
+
+   <includes
+         id="org.eclipse.ecf.filetransfer.httpclient45.feature"
+         version="1.0.400.v20200522-1203"/>
+
+   <includes
+         id="org.eclipse.ecf.filetransfer.ssl.feature"
+         version="1.1.300.v20200317-1602"/>
+
+   <includes
+         id="org.lamport.tla.toolbox.feature.jclouds"
+         version="1.0.0.202012311918"/>
+
+   <includes
+         id="org.apache.jclouds.feature"
+         version="2.1.2.5"/>
+
+   <includes
+         id="com.abstratt.eclipsegraphviz.feature"
+         version="2.5.201812"/>
+
+   <includes
+         id="org.eclipse.recommenders.news.rcp.feature"
+         version="2.5.4.v20180909-1132"/>
+
+   <plugin
+         id="org.lamport.tla.toolbox.product.standalone"
+         download-size="311"
+         install-size="866"
+         version="1.0.0.202012311918"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.core.filesystem.win32.x86_64"
+         os="win32"
+         arch="x86_64"
+         download-size="37"
+         install-size="73"
+         version="1.4.200.v20190812-0909"
+         fragment="true"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.core.filesystem.linux.x86_64"
+         os="linux"
+         arch="x86_64"
+         download-size="11"
+         install-size="21"
+         version="1.2.300.v20180828-0158"
+         fragment="true"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.core.filesystem.macosx"
+         os="macosx"
+         download-size="16"
+         install-size="44"
+         version="1.3.200.v20190903-0945"
+         fragment="true"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.compare"
+         download-size="792"
+         install-size="1606"
+         version="3.7.1000.v20200511-1203"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.concurrent"
+         download-size="25"
+         install-size="45"
+         version="1.1.500.v20200106-1437"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.team.ui"
+         download-size="1430"
+         install-size="3053"
+         version="3.8.900.v20200422-1935"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.team.core"
+         download-size="394"
+         install-size="849"
+         version="3.8.1000.v20200428-1255"
+         unpack="false"/>
+
+   <plugin
+         id="org.apache.commons.beanutils"
+         download-size="240"
+         install-size="499"
+         version="1.8.0.v201205091237"
+         unpack="false"/>
+
+   <plugin
+         id="org.apache.commons.collections"
+         download-size="617"
+         install-size="1241"
+         version="3.2.2.v201511171945"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.ui.intro.quicklinks"
+         download-size="23"
+         install-size="43"
+         version="1.0.500.v20200515-1758"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.ui.net"
+         download-size="45"
+         install-size="84"
+         version="1.3.800.v20200422-1935"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.core.net.linux.x86_64"
+         os="linux"
+         arch="x86_64"
+         download-size="95"
+         install-size="265"
+         version="1.2.400.v20190924-1023"
+         fragment="true"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.core.net.win32.x86_64"
+         os="win32"
+         arch="x86_64"
+         download-size="34"
+         install-size="63"
+         version="1.1.500.v20190925-1337"
+         fragment="true"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.p2.director"
+         download-size="106"
+         install-size="247"
+         version="2.4.700.v20200511-1530"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.p2.director.app"
+         download-size="56"
+         install-size="103"
+         version="1.1.600.v20200511-1530"
+         unpack="false"/>
+
+   <plugin
+         id="org.apache.commons.lang3"
+         download-size="323"
+         install-size="716"
+         version="3.1.0.v201403281430"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.mylyn.commons.notifications.core"
+         download-size="14"
+         install-size="21"
+         version="1.16.0.v20180904-2231"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.mylyn.commons.notifications.feed"
+         download-size="30"
+         install-size="55"
+         version="1.16.0.v20180904-2231"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.mylyn.commons.notifications.ui"
+         download-size="61"
+         install-size="122"
+         version="1.16.0.v20180904-2231"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.mylyn.commons.workbench"
+         download-size="177"
+         install-size="342"
+         version="3.24.2.v20180904-2231"
+         unpack="false"/>
+
+   <plugin
+         id="org.apache.commons.lang"
+         download-size="291"
+         install-size="618"
+         version="2.6.0.v201404270220"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.mylyn.commons.screenshots"
+         download-size="109"
+         install-size="221"
+         version="3.24.2.v20180904-2231"
+         unpack="false"/>
+
+   <plugin
+         id="com.google.guava"
+         download-size="2210"
+         install-size="4995"
+         version="15.0.0.v201403281430"
+         unpack="false"/>
+
+   <plugin
+         id="com.google.guava"
+         download-size="2612"
+         install-size="5867"
+         version="21.0.0.v20170206-1425"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.mylyn.commons.ui"
+         download-size="330"
+         install-size="519"
+         version="3.24.2.v20180904-2231"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.mylyn.commons.core"
+         download-size="123"
+         install-size="219"
+         version="3.24.2.v20180904-2231"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.ui.browser"
+         download-size="202"
+         install-size="336"
+         version="3.6.800.v20200410-1405"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.jdt.annotation"
+         download-size="15"
+         install-size="21"
+         version="1.1.500.v20200407-1355"
+         unpack="false"/>
+
+   <plugin
+         id="org.lamport.tla.toolbox.rss"
+         download-size="1099"
+         install-size="1229"
+         version="1.0.0.202012311918"
+         fragment="true"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.ui.themes"
+         download-size="52"
+         install-size="101"
+         version="1.2.1000.v20200528-1125"/>
+
+   <plugin
+         id="org.eclipse.e4.ui.css.swt.theme"
+         download-size="27"
+         install-size="49"
+         version="0.12.700.v20200527-0719"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.e4.ui.css.swt"
+         download-size="199"
+         install-size="413"
+         version="0.13.1000.v20200525-0806"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.e4.ui.ide"
+         download-size="11"
+         install-size="15"
+         version="3.15.100.v20200323-2111"
+         unpack="false"/>
+
+</feature>

@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feature
+      id="org.lamport.tla.toolbox.feature.editor"
+      label="TLA+ Toolbox Editor Feature"
+      version="1.0.0.202012311918"
+      provider-name="Simon Zambrovski, Leslie Lamport"
+      plugin="org.lamport.tla.toolbox.editor.basic">
+
+   <description>
+      This feature defines the set of plug-ins that are required to
+run the TLA+ Editor.
+   </description>
+
+   <plugin
+         id="org.eclipse.core.filebuffers"
+         download-size="113"
+         install-size="247"
+         version="3.6.1000.v20200409-1035"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.core.runtime"
+         download-size="72"
+         install-size="154"
+         version="3.18.0.v20200506-2143"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.ui"
+         download-size="467"
+         install-size="578"
+         version="3.117.0.v20200518-1705"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.ui.editors"
+         download-size="601"
+         install-size="1354"
+         version="3.13.200.v20200501-2307"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.ui.ide"
+         download-size="2425"
+         install-size="4834"
+         version="3.17.100.v20200530-0835"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.core.resources"
+         download-size="873"
+         install-size="1904"
+         version="3.13.700.v20200209-1624"
+         unpack="false"/>
+
+   <plugin
+         id="org.lamport.tla.toolbox.editor.basic"
+         download-size="377"
+         install-size="827"
+         version="1.0.0.202012311918"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.core.filesystem"
+         download-size="65"
+         install-size="122"
+         version="1.7.700.v20200110-1734"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.jface.text"
+         download-size="1025"
+         install-size="2192"
+         version="3.16.300.v20200526-0811"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.ui.workbench.texteditor"
+         download-size="642"
+         install-size="1373"
+         version="3.14.200.v20200421-1954"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.compare.core"
+         download-size="66"
+         install-size="127"
+         version="3.6.900.v20200412-2017"
+         unpack="false"/>
+
+<license url="">
+      MIT License
+
+Copyright (c) 2018 Microsoft Corporation
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the &amp;quot;Software&amp;quot;), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED &amp;quot;AS IS&amp;quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+   </license></feature>

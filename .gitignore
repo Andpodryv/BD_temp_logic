@@ -1,0 +1,11 @@
+.venv/
+__pycache__/
+*.pyc
+*.log
+toolbox_/plugins/
+toolbox_/plugins/
+.venv/
+__pycache__/
+*.pyc
+*.log
+*.html
