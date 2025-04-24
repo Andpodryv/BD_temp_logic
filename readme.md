@@ -13,7 +13,7 @@ Kripke/
 ├── graph.json               # Исходный JSON-граф
 ├── .gitignore               # Игнорируемые файлы Git
 ├── readme.md                # Документация по проекту
-```</pre>
+</pre>
 ---
 
 ## ⚙️ Требования
@@ -26,7 +26,7 @@ Kripke/
 
 ```bash
 git clone https://github.com/Andpodryv/BD_temp_logic.git
-cd kripke-stand
+cd BD_temp_logic
 ```
 
 2. (Опционально) создайте виртуальное окружение:
