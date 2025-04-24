@@ -1,6 +1,10 @@
+import getpass
 import json
 import subprocess
 import os
+import re
+import platform
+
 
 def print_invariants():
     invariants = [
@@ -176,19 +180,95 @@ prop_174472089399451000
     with open(mc_cfg_path, 'w') as mc_cfg_file:
         mc_cfg_file.write(cfg_mc_content)
 
-    print(f"MC.tla and MC.cfg files generated at {mc_tla_path} and {mc_cfg_path}")
+    #print(f"MC.tla and MC.cfg files generated at {mc_tla_path} and {mc_cfg_path}")
+
+
+def parse_tlc_output(output: str):
+    results = {}
+
+    # Успешная проверка
+    if "Model checking completed. No error has been found." in output:
+        results["status"] = "✅ Проверка завершена успешно. Инварианты выполняются."
+    elif "Invariant is violated" in output or "Temporal property is violated" in output:
+        results["status"] = "❌ Инвариант нарушен!"
+    else:
+        results["status"] = "⚠️ Неизвестный результат TLC."
+
+    # Кол-во состояний
+    states_match = re.search(r"(\d+) states generated, (\d+) distinct states found", output)
+    if states_match:
+        results["states_total"] = int(states_match.group(1))
+        results["states_distinct"] = int(states_match.group(2))
+
+    # Глубина
+    depth_match = re.search(r"The depth of the complete state graph search is (\d+)", output)
+    if depth_match:
+        results["depth"] = int(depth_match.group(1))
+
+    # Время выполнения
+    time_match = re.search(r"Finished in ([\d]+s)", output)
+    if time_match:
+        results["time"] = time_match.group(1)
+
+    return results
 
 
 def run_tlc_verification():
-    command = ["sudo", "-S", "java", "-jar", "toolbox_/tla2tools.jar", "-config", "Model/MC.cfg",
-               "Model/MC.tla"]
     try:
-        password = input("Enter sudo password: ")
-        process = subprocess.Popen(command, stdin=subprocess.PIPE)
-        process.communicate(input=f"{password}\n".encode())
-    except Exception as e:
-        print(f"Error running TLC: {e}")
+        system = platform.system()
+        tla_jar = os.path.join("toolbox_", "tla2tools.jar")
+        tla_file = os.path.join("Model", "MC.tla")
+        cfg_file = os.path.join("Model", "MC.cfg")
 
+        if not os.path.exists(tla_jar):
+            print(f"⚠️ Не найден файл {tla_jar}. Убедись, что TLA2tools.jar лежит в toolbox_.")
+            return
+
+        # Команда запуска TLC
+        cmd = ["java", "-jar", tla_jar, "-dump", "dot", "file", "-config", cfg_file, tla_file]
+
+        # Linux → добавим sudo
+        if system == "Linux":
+            cmd.insert(0, "-S")
+            cmd.insert(0, "sudo")
+
+            # Ввод пароля один раз
+            sudo_pass = getpass.getpass("🔐 Введите пароль sudo: ")
+
+            result = subprocess.run(
+                cmd,
+                input=sudo_pass + "\n",
+                stdout=subprocess.PIPE,
+                stderr=subprocess.STDOUT,
+                text=True
+            )
+        else:
+            # Windows без sudo
+            result = subprocess.run(
+                cmd,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.STDOUT,
+                text=True
+            )
+
+        output = result.stdout
+        with open("Model/tlc_output.log", "w", encoding="utf-8") as f:
+            f.write(output)
+
+        parsed = parse_tlc_output(output)
+
+        print(f"\n{parsed.get('status')}")
+        print("--- Статистика TLC ---")
+        if "states_total" in parsed:
+            print(f"🔹 Всего состояний: {parsed['states_total']}")
+            print(f"🔹 Уникальных состояний: {parsed['states_distinct']}")
+        if "depth" in parsed:
+            print(f"🔹 Глубина графа: {parsed['depth']}")
+        if "time" in parsed:
+            print(f"🔹 Время проверки: {parsed['time']}")
+
+    except Exception as e:
+        print(f"🚨 Ошибка при запуске TLC: {e}")
 
 # Пример запуска
 if __name__ == "__main__":
