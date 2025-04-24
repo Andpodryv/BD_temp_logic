@@ -1,8 +1,18 @@
 from kripke_struct import visualize_kripke_fixed
 from TLA_gen import *
 
+def get_kripke_file():
+    while True:
+        path = input('Введите путь до структуры (Enter для "graph.json"):\n').strip()
+        if path == '':
+            path = 'graph.json'
+        if os.path.exists(path) and os.path.isfile(path):
+            return path
+        else:
+            print(f"Файл '{path}' не найден. Попробуйте снова.\n")
+
 if __name__ == '__main__':
-    kripke_str_file = input('Введите путь до структуры:\n')
+    kripke_str_file = get_kripke_file()
     while True:
         try:
             n = int(input("\n1. Вывести структуру крипке \n2. Вывести проверямые инварианты\n"
