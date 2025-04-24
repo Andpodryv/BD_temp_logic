@@ -1,17 +1,19 @@
+
+<pre>```
 Kripke/
 ├── .venv/                   # Виртуальное окружение Python
-├── Kripke.toolbox/          # Каталог TLA+ Toolbox (уже установлен)
-├── Model/                   # Шаблоны и модели
+├── Model/                   # Данные для верификации
 ├── states/                  # Данные о состояниях
-├── toolbox_/                # Скрипты и структура Kripke-графа
-│   ├── graph.json
-│   ├── kripke_struct.py
-│   ├── kripke_graph.html
-│   ├── main.py              # Точка входа для запуска всей системы
-│   ├── TLA_gen.py
-│   └── main.tla             # Сгенерированная TLA+ спецификация
-```
-
+├── toolbox_/                # TLA+ Toolbox + TLC
+├── kripke_struct.py     # Генерация и визуализация Kripke-графа
+├── kripke_graph.html    # HTML-файл с визуализацией
+├── main.py              # Точка входа для запуска всей системы
+├── TLA_gen.py           # Генерация TLA+ спецификации
+└── main.tla             # Сгенерированная TLA+ спецификация
+├── graph.json               # Исходный JSON-граф
+├── .gitignore               # Игнорируемые файлы Git
+├── readme.md                # Документация по проекту
+```</pre>
 ---
 
 ## ⚙️ Требования
@@ -33,7 +35,7 @@ pip install -r requirements.txt
 1. Клонируйте или скопируйте проект:
 
 ```bash
-git clone https://github.com/<your-username>/kripke-stand.git
+git clone https://github.com/Andpodryv/BD_temp_logic.git
 cd kripke-stand
 ```
 
@@ -52,8 +54,9 @@ pip install -r requirements.txt
 
 4. Запустите программу:
 
-```bash
-python toolbox_/main.py
+```
+bash
+python main.py
 ```
 
 ---
