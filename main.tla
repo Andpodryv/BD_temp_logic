@@ -11,8 +11,8 @@ Edges == {
 
 PropertyMap == [
   S0 |-> {"received", "source=raw"},
-  S1 |-> {"normalized"},
-  S2 |-> {"filtered"},
+  S1 |-> {"normalized", "source=raw"},
+  S2 |-> {"filtered", "source=raw"},
   S3 |-> {"tags_extracted", "type=scada"},
   S4 |-> {"type=scada", "validated"},
   S5 |-> {"aggregated", "type=scada"},

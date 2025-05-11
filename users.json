@@ -1,0 +1,16 @@
+[
+  { "name": "Jack", "role": "SCADA_Admin" },
+  { "name": "Mike", "role": "SCADA_ShiftA" },
+  { "name": "Steve", "role": "SCADA_ShiftB" },
+  { "name": "Chris", "role": "SCADA_ShiftC" },
+  { "name": "Robert", "role": "SOC_Admin" },
+  { "name": "Alice", "role": "SOC_Analyst" },
+  { "name": "Eve", "role": "SOC_NightAnalyst" },
+  { "name": "Laura", "role": "PII_Admin" },
+  { "name": "Sophia", "role": "PII_Senior" },
+  { "name": "Daniel", "role": "PII_Junior" },
+  { "name": "Olivia", "role": "IMG_Admin" },
+  { "name": "Noah", "role": "IMG_Worker" },
+  { "name": "Emma", "role": "Support_Admin" },
+  { "name": "Liam", "role": "Support_Worker" }
+]

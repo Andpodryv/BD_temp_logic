@@ -1,26 +1,59 @@
 from kripke_struct import visualize_kripke_fixed
-from TLA_gen import *
+from gen_tla_kripke import *
+from gen_tla_AC import AC_verif
 
 
-def get_kripke_file():
-    while True:
-        path = input('Введите путь до структуры (Enter для "graph.json"):\n').strip()
-        if path == '':
-            path = 'graph.json'
-        if os.path.exists(path) and os.path.isfile(path):
-            return path
-        else:
-            print(f"Файл '{path}' не найден. Попробуйте снова.\n")
+def print_users_from_file(path: str):
+    try:
+        with open(path, encoding="utf-8") as f:
+            users = json.load(f)
+
+        print("\n Список пользователей:")
+        print(f"{'Имя':<10} | {'Департамент':<10} | Роль")
+        print("-" * 40)
+
+        for user in users:
+            name = user.get("name", "<без имени>")
+            role = user.get("role", "<без роли>")
+
+            # Определение департамента по имени роли
+            if "SCADA" in role:
+                dept = "SCADA"
+            elif "SOC" in role:
+                dept = "SOC"
+            elif "PII" in role:
+                dept = "PII"
+            elif "IMG" in role:
+                dept = "IMG"
+            elif "Support" in role or "SUPPORT" in role:
+                dept = "SUPPORT"
+            else:
+                dept = "—"
+
+            print(f"{name:<10} | {dept:<10} | {role}")
+
+    except Exception as e:
+        print(f"!!! Ошибка при чтении файла пользователей: {e}")
+
 
 
 if __name__ == '__main__':
-    kripke_str_file = get_kripke_file()
+    kripke_str_file = "graph.json"
+    if not os.path.exists(kripke_str_file) or os.stat(kripke_str_file).st_size == 0:
+        print("Файл graph.json не найден или пустой.")
+        exit(1)
+    users_list_file = "users.json"
+    if not os.path.exists(users_list_file) or os.stat(users_list_file).st_size == 0:
+        print("Файл users.json не найден или пустой.")
+        exit(1)
 
     while True:
         try:
             n = int(input("\n1. Вывести структуру Крипке\n"
                           "2. Вывести проверяемые инварианты\n"
                           "3. Запустить проверку структуры\n"
+                          "4. Показать список пользователей\n"
+                          "5. Запустить проверку доступа пользователей для структуры\n"
                           "0. Выход\n>> "))
         except ValueError:
             print("Ошибка! Введите корректную цифру")
@@ -34,6 +67,10 @@ if __name__ == '__main__':
             generate_tla_spec(kripke_str_file)
             generate_mc_files("Model/MC.tla", "Model/MC.cfg")
             run_tlc_verification()
+        elif n == 4:
+            print_users_from_file(users_list_file)
+        elif n == 5:
+            AC_verif()
         elif n == 0:
             break
         else:
