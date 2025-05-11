@@ -8,5 +8,7 @@ toolbox_/plugins/
 __pycache__/
 *.pyc
 *.log
+states/
 *.html
 Kripke.toolbox
+README.txt
