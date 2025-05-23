@@ -1,0 +1,21 @@
+{
+  "Roles": ["Admin", "ShiftA", "ShiftB", "ShiftC", "Analyst", "NightAnalyst", "Senior", "Junior", "ImageWorker", "SupportWorker"],
+  "Departments": ["SCADA", "SOC", "PII", "IMG", "SUPPORT"],
+  "TimeType": ["Working", "NonWorking"],
+  "RoleInitializations": {
+    "SCADA_Admin": {"department": "SCADA", "role_name": "Admin", "schedule": ["Working", "NonWorking"]},
+    "SCADA_ShiftA": {"department": "SCADA", "role_name": "ShiftA", "schedule": ["Working", "NonWorking"]},
+    "SCADA_ShiftB": {"department": "SCADA", "role_name": "ShiftB", "schedule": ["Working", "NonWorking"]},
+    "SCADA_ShiftC": {"department": "SCADA", "role_name": "ShiftC", "schedule": ["Working", "NonWorking"]},
+    "SOC_Admin": {"department": "SOC", "role_name": "Admin", "schedule": ["Working", "NonWorking"]},
+    "SOC_Analyst": {"department": "SOC", "role_name": "Analyst", "schedule": ["Working"]},
+    "SOC_NightAnalyst": {"department": "SOC", "role_name": "NightAnalyst", "schedule": ["Working", "NonWorking"]},
+    "PII_Admin": {"department": "PII", "role_name": "Admin", "schedule": ["Working", "NonWorking"]},
+    "PII_Senior": {"department": "PII", "role_name": "Senior", "schedule": ["Working"]},
+    "PII_Junior": {"department": "PII", "role_name": "Junior", "schedule": ["Working"]},
+    "IMG_Admin": {"department": "IMG", "role_name": "Admin", "schedule": ["Working", "NonWorking"]},
+    "IMG_Worker": {"department": "IMG", "role_name": "ImageWorker", "schedule": ["Working"]},
+    "Support_Admin": {"department": "SUPPORT", "role_name": "Admin", "schedule": ["Working", "NonWorking"]},
+    "Support_Worker": {"department": "SUPPORT", "role_name": "SupportWorker", "schedule": ["Working"]}
+  }
+}

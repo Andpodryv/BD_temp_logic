@@ -74,7 +74,6 @@ ScheduleType == [ Time: TimeType ]
 RoleType == [ department : Departments, role_name : Roles, schedule : ScheduleType ]
 UserType == [ name : STRING, role : RoleType ]
 
-
 SCADA_Admin == [department |-> "SCADA", role_name |-> "Admin", schedule |-> {[Time |-> "Working"], [Time |-> "NonWorking"]}]
 SCADA_ShiftA == [department |-> "SCADA", role_name |-> "ShiftA", schedule |-> {[Time |-> "Working"], [Time |-> "NonWorking"]}]
 SCADA_ShiftB == [department |-> "SCADA", role_name |-> "ShiftB", schedule |-> {[Time |-> "Working"], [Time |-> "NonWorking"]}]
@@ -90,14 +89,8 @@ IMG_Worker == [department |-> "IMG", role_name |-> "ImageWorker", schedule |-> {
 Support_Admin == [department |-> "SUPPORT", role_name |-> "Admin", schedule |-> {[Time |-> "Working"], [Time |-> "NonWorking"]}]
 Support_Worker == [department |-> "SUPPORT", role_name |-> "SupportWorker", schedule |-> {[Time |-> "Working"]}]
 
-
 Init ==
-  /\ R = {
-      SCADA_Admin, SCADA_ShiftA, SCADA_ShiftB, SCADA_ShiftC,
-      SOC_Admin, SOC_Analyst, SOC_NightAnalyst,
-      PII_Admin, PII_Senior, PII_Junior,
-      IMG_Admin, IMG_Worker,
-      Support_Admin, Support_Worker }
+  /\ R = {SCADA_Admin, SCADA_ShiftA, SCADA_ShiftB, SCADA_ShiftC, SOC_Admin, SOC_Analyst, SOC_NightAnalyst, PII_Admin, PII_Senior, PII_Junior, IMG_Admin, IMG_Worker, Support_Admin, Support_Worker}
   /\ U = {
       [ name |-> "Sophia", role |-> PII_Senior ] }
   /\ AllAccessedStates = {}
@@ -168,4 +161,4 @@ EventuallySomeAccess ==
 Invariants == Inv_AccessConsistency /\ Inv_OnlyValidStates /\ Inv_NoDuplicateAccess /\ Inv_AdminPower /\ EventuallySomeAccess
 
 =============================================================================
-\* Generated on Sun May 11 02:34:10 2025 by stand.py
+\* Generated on Fri May 23 03:58:54 2025 by stand.py

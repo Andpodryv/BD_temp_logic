@@ -20,6 +20,14 @@ with open("graph.json", encoding=ENCODING) as f:
     graph = json.load(f)
 with open("users.json", encoding=ENCODING) as f:
     users = json.load(f)
+with open("roles_config.json", encoding=ENCODING) as f:
+    role_config = json.load(f)
+
+# Парсинг конфиг файла ролей
+ROLES = role_config["Roles"]
+DEPARTMENTS = role_config["Departments"]
+TIMETYPE = role_config["TimeType"]
+ROLE_INITS = role_config["RoleInitializations"]
 
 # Парсинг PropertyMap, Edges, States
 def parse_graph(graph_data):
@@ -35,33 +43,27 @@ def parse_graph(graph_data):
 
 states, edges, propmap = parse_graph(graph)
 
-# Блоки для всех спецификаций
-role_defs = '''
-Roles == {"Admin", "ShiftA", "ShiftB", "ShiftC", "Analyst", "NightAnalyst", "Senior", "Junior", "ImageWorker", "SupportWorker"}
-Departments == {"SCADA", "SOC", "PII", "IMG", "SUPPORT"}
-TimeType == {"Working", "NonWorking"}
+# Блоки для всех спецификаций из распарсенного конфига
+def generate_role_defs():
+    roles = ", ".join(f'"{r}"' for r in ROLES)
+    deps = ", ".join(f'"{d}"' for d in DEPARTMENTS)
+    time = ", ".join(f'"{t}"' for t in TIMETYPE)
+    return f'''
+Roles == {{{roles}}}
+Departments == {{{deps}}}
+TimeType == {{{time}}}
 ScheduleType == [ Time: TimeType ]
 
 RoleType == [ department : Departments, role_name : Roles, schedule : ScheduleType ]
 UserType == [ name : STRING, role : RoleType ]
 '''
 
-role_init_defs = '''
-SCADA_Admin == [department |-> "SCADA", role_name |-> "Admin", schedule |-> {[Time |-> "Working"], [Time |-> "NonWorking"]}]
-SCADA_ShiftA == [department |-> "SCADA", role_name |-> "ShiftA", schedule |-> {[Time |-> "Working"], [Time |-> "NonWorking"]}]
-SCADA_ShiftB == [department |-> "SCADA", role_name |-> "ShiftB", schedule |-> {[Time |-> "Working"], [Time |-> "NonWorking"]}]
-SCADA_ShiftC == [department |-> "SCADA", role_name |-> "ShiftC", schedule |-> {[Time |-> "Working"], [Time |-> "NonWorking"]}]
-SOC_Admin == [department |-> "SOC", role_name |-> "Admin", schedule |-> {[Time |-> "Working"], [Time |-> "NonWorking"]}]
-SOC_Analyst == [department |-> "SOC", role_name |-> "Analyst", schedule |-> {[Time |-> "Working"]}]
-SOC_NightAnalyst == [department |-> "SOC", role_name |-> "NightAnalyst", schedule |-> {[Time |-> "Working"], [Time |-> "NonWorking"]}]
-PII_Admin == [department |-> "PII", role_name |-> "Admin", schedule |-> {[Time |-> "Working"], [Time |-> "NonWorking"]}]
-PII_Senior == [department |-> "PII", role_name |-> "Senior", schedule |-> {[Time |-> "Working"]}]
-PII_Junior == [department |-> "PII", role_name |-> "Junior", schedule |-> {[Time |-> "Working"]}]
-IMG_Admin == [department |-> "IMG", role_name |-> "Admin", schedule |-> {[Time |-> "Working"], [Time |-> "NonWorking"]}]
-IMG_Worker == [department |-> "IMG", role_name |-> "ImageWorker", schedule |-> {[Time |-> "Working"]}]
-Support_Admin == [department |-> "SUPPORT", role_name |-> "Admin", schedule |-> {[Time |-> "Working"], [Time |-> "NonWorking"]}]
-Support_Worker == [department |-> "SUPPORT", role_name |-> "SupportWorker", schedule |-> {[Time |-> "Working"]}]
-'''
+def generate_role_init_defs():
+    lines = []
+    for name, data in ROLE_INITS.items():
+        sched_set = ", ".join(f'[Time |-> "{s}"]' for s in data["schedule"])
+        lines.append(f'{name} == [department |-> "{data["department"]}", role_name |-> "{data["role_name"]}", schedule |-> {{{sched_set}}}]')
+    return "\n".join(lines)
 
 access_logic = '''
 DepartmentMatch(dept, props) ==
@@ -138,14 +140,11 @@ def generate_user_spec(user, states, edges, propmap):
     edges_str = "Edges == {\n  " + ",\n  ".join(edges) + "\n}"
     propmap_str = "PropertyMap == [\n  " + ",\n  ".join(propmap) + "\n]"
 
+    init_roles = ", ".join(ROLE_INITS.keys())
+
     init_block = f'''
 Init ==
-  /\ R = {{
-      SCADA_Admin, SCADA_ShiftA, SCADA_ShiftB, SCADA_ShiftC,
-      SOC_Admin, SOC_Analyst, SOC_NightAnalyst,
-      PII_Admin, PII_Senior, PII_Junior,
-      IMG_Admin, IMG_Worker,
-      Support_Admin, Support_Worker }}
+  /\ R = {{{init_roles}}}
   /\ U = {{
       [ name |-> "{username}", role |-> {role} ] }}
   /\ AllAccessedStates = {{}}
@@ -162,8 +161,8 @@ vars == << U, R, AccessMap, AllAccessedStates >>
 {edges_str}
 {propmap_str}
 
-{role_defs}
-{role_init_defs}
+{generate_role_defs()}
+{generate_role_init_defs()}
 {init_block}
 {access_logic}
 =============================================================================
