@@ -271,8 +271,8 @@ def save_access_matrix_html(matrix, html_path):
             th, td { border: 1px solid #999; padding: 8px; text-align: center; }
             th { background-color: #f2f2f2; }
             td:first-child, th:first-child { text-align: left; }
-            .✔ { background-color: #d4edda; }
-            .✘ { background-color: #f8d7da; }
+            .✔ { background-color: #6edc5f; }
+            .✘ { background-color: #ff4c4c; }
         </style>
     </head>
     <body>
@@ -292,7 +292,31 @@ def save_access_matrix_html(matrix, html_path):
     path.write_text(html, encoding="utf-8")
     webbrowser.open(path.absolute().as_uri())
 
+def parse_output(username):
+    log_path = TLA_DIR / f"{username}_tlc.log"
+    if not log_path.exists():
+        print(f"Лог-файл {log_path} не найден для пользователя {username}")
+        return False
 
+    with log_path.open(encoding=ENCODING) as f:
+        content = f.read()
+
+    success_msg = "Model checking completed. No error has been found."
+
+    if success_msg in content:
+        print(f"Верификация успешна для пользователя {username}")
+        return True
+    else:
+        print(f"Ошибка верификации для пользователя {username}")
+        return False
+
+def print_summary(elapsed, all_ok):
+    print("\n Общая длительность верификации: {:.2f} секунд".format(elapsed))
+
+    if all_ok:
+        print(" Все спецификации успешно прошли верификацию!")
+    else:
+        print("Некоторые спецификации завершились с ошибками.")
 
 # main функция
 def AC_verif():
@@ -301,23 +325,25 @@ def AC_verif():
     if platform.system() == "Linux":
         import getpass
         sudo_pass = getpass.getpass("Введите пароль sudo один раз: ")
+
+    all_ok = True
+    start_time = time.time()  # ⏱ старт таймера
+
     for user in users:
         username = user["name"]
         generate_user_spec(user, states, edges, propmap)
         generate_mc_files(username)
         run_tlc_verification(username, sudo_pass=sudo_pass)
+
+        if not parse_output(username):
+            all_ok = False
+
         access_matrix[username] = parse_access_log(username)
 
-    save_access_matrix_html(access_matrix, "access_matrix.html")
-    '''
-    all_states = sorted({s for lst in access_matrix.values() for s in lst}, key=lambda x: int(x[1:]))
-    table = []
-    for user, accessed in access_matrix.items():
-       table.append(row)
+    elapsed = time.time() - start_time  # ⏱ конец таймера
+    print_summary(elapsed, all_ok)
 
-    headers = ["User"] + all_states
-    print(tabulate(table, headers=headers, tablefmt="github"))
-    '''
+    save_access_matrix_html(access_matrix, "access_matrix.html")
 
 
 if __name__ == "__main__":

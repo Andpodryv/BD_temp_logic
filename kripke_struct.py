@@ -47,7 +47,7 @@ def visualize_kripke_fixed(json_path, html_out="kripke_graph.html"):
         )
 
     for src, dst in edges:
-        net.add_edge(src, dst)
+        net.add_edge(src, dst, color="black")
 
     net.set_options("""
     var options = {
