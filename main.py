@@ -42,6 +42,10 @@ if __name__ == '__main__':
     if not os.path.exists(kripke_str_file) or os.stat(kripke_str_file).st_size == 0:
         print("Файл graph.json не найден или пустой.")
         exit(1)
+    inv_kripke_str_file = "invariants_kripke.json"
+    if not os.path.exists(inv_kripke_str_file) or os.stat(inv_kripke_str_file).st_size == 0:
+        print("Файл invariants_kripke.json не найден или пустой.")
+        exit(1)
     users_list_file = "users.json"
     if not os.path.exists(users_list_file) or os.stat(users_list_file).st_size == 0:
         print("Файл users.json не найден или пустой.")
@@ -64,7 +68,7 @@ if __name__ == '__main__':
         elif n == 2:
             print_invariants()
         elif n == 3:
-            generate_tla_spec(kripke_str_file)
+            generate_tla_spec(kripke_str_file, inv_kripke_str_file)
             generate_mc_files("Model/MC.tla", "Model/MC.cfg")
             run_tlc_verification()
         elif n == 4:

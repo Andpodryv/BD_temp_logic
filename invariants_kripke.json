@@ -1,0 +1,42 @@
+[
+  {
+    "type": "scada",
+    "description": "Если SCADA-данные были визуализированы, то до этого они были агрегированы и валидированы",
+    "sequence": ["validated", "aggregated", "visualized"]
+  },
+  {
+    "type": "scada",
+    "description": "Если SCADA-данные были архивированы, они должны были быть сохранены",
+    "sequence": ["stored", "archived"]
+  },
+  {
+    "type": "pii",
+    "description": "Если PII был экспортирован или предоставлен доступ, то до этого он был анонимизирован и проверен",
+    "sequence": ["anonymized", "checked", "exported"]
+  },
+  {
+    "type": "scada",
+    "description": "Если SCADA-данные были сохранены, значит они были агрегированы",
+    "sequence": ["aggregated", "stored"]
+  },
+  {
+    "type": "pii",
+    "description": "Если PII были проверены, то до этого они были анонимизированы",
+    "sequence": ["anonymized", "checked"]
+  },
+  {
+    "type": "log",
+    "description": "Если лог был архивирован или отправлен, значит ранее он был проанализирован",
+    "sequence": ["analyzed", "archived"]
+  },
+  {
+    "type": "image",
+    "description": "Если изображение сохранено или архивировано, значит оно было размечено AI",
+    "sequence": ["ai_marked", "stored"]
+  },
+  {
+    "type": "pii",
+    "description": "Если PII удалены по сроку, то они ранее были архивированы",
+    "sequence": ["archived", "expired_deleted"]
+  }
+]

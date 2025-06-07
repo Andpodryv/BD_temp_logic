@@ -5,25 +5,78 @@ import os
 import re
 import platform
 
+def build_invariant(index, inv, type_names):
+    trace_var = "Trace"
+    actions = inv["sequence"]
+    last = actions[-1]
+    preconds = actions[:-1]
+    datatype = inv["type"]
 
-def print_invariants():
-    invariants = [
-        "1. Если SCADA-данные были визуализированы, то до этого они были агрегированы и валидированы.",
-        "2. Если SCADA-данные были архивированы, они должны были быть сохранены.",
-        "3. Если PII был экспортирован или предоставлен доступ, то до этого он был анонимизирован и проверен.",
-        "4. Если SCADA сохранены, значит были агрегированы.",
-        "5. Если PII проверены, то до этого они были анонимизированы.",
-        "6. Если лог был архивирован или отправлен, значит ранее он был проанализирован.",
-        "7. Если изображение сохранено или архивировано, значит было размечено AI.",
-        "8. Если PII удалены по сроку, то они ранее были архивированы.",
-    ]
-    print("\nПроверяемые инварианты:\n")
-    for inv in invariants:
-        print(inv)
+    name = f"Invariant{index+1}"
+    comment = inv["description"]
+
+    # Автоматически определяем имя функции проверки типа
+    def format_typename(t):
+        return "Is" + t.lower().capitalize()
+
+    if datatype.lower() not in type_names:
+        raise ValueError(f"Тип '{datatype}' не найден среди доступных типов: {type_names}")
+
+    type_check = format_typename(datatype)
+
+    # если действие произошло в текущем состоянии
+    head = f'("{last}" \\in PropertyMap[{trace_var}[i]] /\\ {type_check}({trace_var}[i]))'
+
+    # то действия должны были произойти раньше
+    body = " /\\\n      ".join([
+        f'\\E j{n} \\in 1..(i-1) : "{act}" \\in PropertyMap[{trace_var}[j{n}]] /\\ {type_check}({trace_var}[j{n}])'
+        for n, act in enumerate(preconds, start=1)
+    ])
+
+    formula = f"""\n(* {comment} *)
+{name} ==
+  \\A i \\in 1..Len({trace_var}) :
+    {head} =>
+      {body}"""
+
+    return name, formula
+
+# автоматическое считывание типов из графа
+def extract_type_checks(prop_map):
+    type_set = set()
+
+    for props in prop_map.values():
+        for p in props:
+            if p.startswith("type="):
+                type_set.add(p.split("=")[1])
+
+    checks = []
+    for t in sorted(type_set):
+        func = f'Is{t.capitalize()}(s) == "type={t}" \\in PropertyMap[s]'
+        checks.append(func)
+    return checks
+
+# выписывание инвариантов
+def print_invariants(json_path="invariants_kripke.json"):
+    try:
+        with open(json_path, "r", encoding="utf-8") as f:
+            invariants = json.load(f)
+
+        print("\nПроверяемые инварианты:\n")
+        for idx, inv in enumerate(invariants, start=1):
+            print(f"{idx}. {inv['description']}")
+
+    except Exception as e:
+        print(f"Ошибка при чтении {json_path}: {e}")
+
+
 # Генерация спецификации
-def generate_tla_spec(graph_path: str, tla_path: str = "main.tla"):
+def generate_tla_spec(graph_path: str, invariants_path: str, tla_path: str = "main.tla"):
     with open(graph_path, "r", encoding="utf-8") as f:
         data = json.load(f)
+
+    with open(invariants_path, "r", encoding="utf-8") as f:
+        inv_data = json.load(f)
 
     states = [f"S{node['id']}" for node in data["nodes"]]
     edges = []
@@ -61,12 +114,14 @@ PropertyMap == [
             f.write(line + "\n")
         f.write("]\n")
 
-        f.write("""
-IsPII(s) == "type=pii" \in PropertyMap[s]
-IsSCADA(s) == "type=scada" \in PropertyMap[s]
-IsLog(s) == "type=log" \in PropertyMap[s]
-IsImage(s) == "type=image" \in PropertyMap[s]\n""")
+        type_checks = extract_type_checks(prop_map)
+        type_names = set()
+        for props in prop_map.values():
+            for p in props:
+                if p.startswith("type="):
+                    type_names.add(p.split("=")[1])
 
+        f.write("\n" + "\n".join(type_checks) + "\n")
 
         f.write('Init == Trace = << "S0" >>\n')
 
@@ -75,72 +130,22 @@ IsImage(s) == "type=image" \in PropertyMap[s]\n""")
           \\E t \\in States :
             /\\ <<Trace[Len(Trace)], t>> \\in Edges
             /\\ ~(\\E i \\in 1..Len(Trace) : Trace[i] = t)
-            /\\ Trace' = Trace \\o <<t>>
+            /\\ Trace' = Trace \\o <<t>>""")
+
+        invariant_defs = []
+        invariant_names = []
+
+        for idx, inv in enumerate(inv_data):
+            name, formula = build_invariant(idx, inv, type_names)
+            invariant_names.append(name)
+            invariant_defs.append(formula)
+
+        f.write("\n" + "\n".join(invariant_defs))
+        f.write(f"\n\nAllInvariants == " + " /\\ ".join(invariant_names))
+        f.write("""
 
 
-(* Если SCADA-данные были визуализированы, то до этого они были агрегированы и валидированы *)
-Invariant1 ==
-  \\A i \\in 1..Len(Trace) :
-    ("visualized" \\in PropertyMap[Trace[i]] /\\ IsSCADA(Trace[i])) =>
-      (\\E j \\in 1..(i-1) : "aggregated" \\in PropertyMap[Trace[j]] /\\ IsSCADA(Trace[j])) /\\
-      (\\E k \\in 1..(i-1) : "validated" \\in PropertyMap[Trace[k]] /\\ IsSCADA(Trace[k]))
 
-(* Если SCADA-данные были архивированы, они должны были быть сохранены *)
-Invariant2 ==
-  \\A i \\in 1..Len(Trace) :
-    ("archived" \\in PropertyMap[Trace[i]] /\\ IsSCADA(Trace[i])) =>
-      \\E j \\in 1..(i-1) : "stored" \\in PropertyMap[Trace[j]] /\\ IsSCADA(Trace[j])
-
-(* Если PII был экспортирован или предоставлен доступ, то до этого он был анонимизирован и проверен *)
-Invariant3 ==
-  \\A i \\in 1..Len(Trace) :
-    (("exported" \\in PropertyMap[Trace[i]] \\/ "access_granted" \\in PropertyMap[Trace[i]]) /\\ IsPII(Trace[i])) =>
-      (\\E j \\in 1..(i-1) : "anonymized" \\in PropertyMap[Trace[j]] /\\ IsPII(Trace[j])) /\\
-      (\\E k \\in 1..(i-1) : "checked" \\in PropertyMap[Trace[k]] /\\ IsPII(Trace[k]))
-
-(* Если SCADA сохранены, значит были агрегированы *)
-Invariant4 ==
-  \\A i \\in 1..Len(Trace) :
-    ("stored" \\in PropertyMap[Trace[i]] /\\ IsSCADA(Trace[i])) =>
-      \\E j \\in 1..(i-1) : "aggregated" \\in PropertyMap[Trace[j]] /\\ IsSCADA(Trace[j])
-
-(* Если PII проверены, то до этого они были анонимизированы *)
-Invariant5 ==
-  \\A i \\in 1..Len(Trace) :
-    ("checked" \\in PropertyMap[Trace[i]] /\\ IsPII(Trace[i])) =>
-      \\E j \\in 1..(i-1) : "anonymized" \\in PropertyMap[Trace[j]] /\\ IsPII(Trace[j])
-
-(* Если лог был архивирован или отправлен, значит ранее он был проанализирован *)
-Invariant6 ==
-  \\A i \\in 1..Len(Trace) :
-    (("archived" \\in PropertyMap[Trace[i]] \\/ ("reported" \\in PropertyMap[Trace[i]] /\\ "target=it" \\in PropertyMap[Trace[i]])) /\\ IsLog(Trace[i])) =>
-      \\E j \\in 1..(i-1) : "analyzed" \\in PropertyMap[Trace[j]] /\\ IsLog(Trace[j])
-
-(* Если изображение сохранено или архивировано, значит было размечено AI *)
-Invariant7 ==
-  \\A i \\in 1..Len(Trace) :
-    ("stored" \\in PropertyMap[Trace[i]] /\\ IsImage(Trace[i])) =>
-      \\E j \\in 1..(i-1) : "ai_marked" \\in PropertyMap[Trace[j]] /\\ IsImage(Trace[j])
-  /\\
-  \\A k \\in 1..Len(Trace) :
-    ("archived" \\in PropertyMap[Trace[k]] /\\ "storage=glacier" \\in PropertyMap[Trace[k]] /\\ IsImage(Trace[k])) =>
-      \\E m \\in 1..(k-1) : "ai_marked" \\in PropertyMap[Trace[m]] /\\ IsImage(Trace[m])
-
-(* Если PII удалены по сроку, то они ранее были архивированы *)
-Invariant8 ==
-  \\A i \\in 1..Len(Trace) :
-    ("expired_deleted" \\in PropertyMap[Trace[i]] /\\ IsPII(Trace[i])) =>
-      \\E j \\in 1..(i-1) : "archived" \\in PropertyMap[Trace[j]] /\\ IsPII(Trace[j])
-
-
-AllInvariants == /\\ Invariant1
-                 /\\ Invariant2
-                 /\\ Invariant3
-                 /\\ Invariant4
-                 /\\ Invariant5
-                 /\\ Invariant6
-                 /\\ Invariant7
-                 /\\ Invariant8
 
 Spec == Init /\\ [][Next]_<<Trace>>
 
@@ -156,7 +161,7 @@ def generate_mc_files(mc_tla_path, mc_cfg_path):
 EXTENDS main, TLC
 
 \* PROPERTY definition @modelCorrectnessProperties:0
-prop_174472089399451000 ==
+prop_main ==
 <>[]AllInvariants
 ----
 =============================================================================
@@ -171,7 +176,7 @@ SPECIFICATION
 Spec
 \* PROPERTY definition
 PROPERTY
-prop_174472089399451000
+prop_main
 \* Generated automatically
     """
 
@@ -272,6 +277,6 @@ def run_tlc_verification():
 
 # Пример запуска
 if __name__ == "__main__":
-    generate_tla_spec("graph.json")
+    generate_tla_spec("graph.json", "invariants_kripke.json")
     generate_mc_files("Model/MC.tla", "Model/MC.cfg")
     run_tlc_verification()

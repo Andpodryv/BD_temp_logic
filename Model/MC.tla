@@ -3,7 +3,7 @@
 EXTENDS main, TLC
 
 \* PROPERTY definition @modelCorrectnessProperties:0
-prop_174472089399451000 ==
+prop_main ==
 <>[]AllInvariants
 ----
 =============================================================================

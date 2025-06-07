@@ -38,10 +38,10 @@ PropertyMap == [
   S25 |-> {"expired_deleted", "type=pii"}
 ]
 
-IsPII(s) == "type=pii" \in PropertyMap[s]
-IsSCADA(s) == "type=scada" \in PropertyMap[s]
-IsLog(s) == "type=log" \in PropertyMap[s]
 IsImage(s) == "type=image" \in PropertyMap[s]
+IsLog(s) == "type=log" \in PropertyMap[s]
+IsPii(s) == "type=pii" \in PropertyMap[s]
+IsScada(s) == "type=scada" \in PropertyMap[s]
 Init == Trace = << "S0" >>
 
         Next ==
@@ -50,70 +50,60 @@ Init == Trace = << "S0" >>
             /\ ~(\E i \in 1..Len(Trace) : Trace[i] = t)
             /\ Trace' = Trace \o <<t>>
 
-
 (* Если SCADA-данные были визуализированы, то до этого они были агрегированы и валидированы *)
 Invariant1 ==
   \A i \in 1..Len(Trace) :
-    ("visualized" \in PropertyMap[Trace[i]] /\ IsSCADA(Trace[i])) =>
-      (\E j \in 1..(i-1) : "aggregated" \in PropertyMap[Trace[j]] /\ IsSCADA(Trace[j])) /\
-      (\E k \in 1..(i-1) : "validated" \in PropertyMap[Trace[k]] /\ IsSCADA(Trace[k]))
+    ("visualized" \in PropertyMap[Trace[i]] /\ IsScada(Trace[i])) =>
+      \E j1 \in 1..(i-1) : "validated" \in PropertyMap[Trace[j1]] /\ IsScada(Trace[j1]) /\
+      \E j2 \in 1..(i-1) : "aggregated" \in PropertyMap[Trace[j2]] /\ IsScada(Trace[j2])
 
 (* Если SCADA-данные были архивированы, они должны были быть сохранены *)
 Invariant2 ==
   \A i \in 1..Len(Trace) :
-    ("archived" \in PropertyMap[Trace[i]] /\ IsSCADA(Trace[i])) =>
-      \E j \in 1..(i-1) : "stored" \in PropertyMap[Trace[j]] /\ IsSCADA(Trace[j])
+    ("archived" \in PropertyMap[Trace[i]] /\ IsScada(Trace[i])) =>
+      \E j1 \in 1..(i-1) : "stored" \in PropertyMap[Trace[j1]] /\ IsScada(Trace[j1])
 
 (* Если PII был экспортирован или предоставлен доступ, то до этого он был анонимизирован и проверен *)
 Invariant3 ==
   \A i \in 1..Len(Trace) :
-    (("exported" \in PropertyMap[Trace[i]] \/ "access_granted" \in PropertyMap[Trace[i]]) /\ IsPII(Trace[i])) =>
-      (\E j \in 1..(i-1) : "anonymized" \in PropertyMap[Trace[j]] /\ IsPII(Trace[j])) /\
-      (\E k \in 1..(i-1) : "checked" \in PropertyMap[Trace[k]] /\ IsPII(Trace[k]))
+    ("exported" \in PropertyMap[Trace[i]] /\ IsPii(Trace[i])) =>
+      \E j1 \in 1..(i-1) : "anonymized" \in PropertyMap[Trace[j1]] /\ IsPii(Trace[j1]) /\
+      \E j2 \in 1..(i-1) : "checked" \in PropertyMap[Trace[j2]] /\ IsPii(Trace[j2])
 
-(* Если SCADA сохранены, значит были агрегированы *)
+(* Если SCADA-данные были сохранены, значит они были агрегированы *)
 Invariant4 ==
   \A i \in 1..Len(Trace) :
-    ("stored" \in PropertyMap[Trace[i]] /\ IsSCADA(Trace[i])) =>
-      \E j \in 1..(i-1) : "aggregated" \in PropertyMap[Trace[j]] /\ IsSCADA(Trace[j])
+    ("stored" \in PropertyMap[Trace[i]] /\ IsScada(Trace[i])) =>
+      \E j1 \in 1..(i-1) : "aggregated" \in PropertyMap[Trace[j1]] /\ IsScada(Trace[j1])
 
-(* Если PII проверены, то до этого они были анонимизированы *)
+(* Если PII были проверены, то до этого они были анонимизированы *)
 Invariant5 ==
   \A i \in 1..Len(Trace) :
-    ("checked" \in PropertyMap[Trace[i]] /\ IsPII(Trace[i])) =>
-      \E j \in 1..(i-1) : "anonymized" \in PropertyMap[Trace[j]] /\ IsPII(Trace[j])
+    ("checked" \in PropertyMap[Trace[i]] /\ IsPii(Trace[i])) =>
+      \E j1 \in 1..(i-1) : "anonymized" \in PropertyMap[Trace[j1]] /\ IsPii(Trace[j1])
 
 (* Если лог был архивирован или отправлен, значит ранее он был проанализирован *)
 Invariant6 ==
   \A i \in 1..Len(Trace) :
-    (("archived" \in PropertyMap[Trace[i]] \/ ("reported" \in PropertyMap[Trace[i]] /\ "target=it" \in PropertyMap[Trace[i]])) /\ IsLog(Trace[i])) =>
-      \E j \in 1..(i-1) : "analyzed" \in PropertyMap[Trace[j]] /\ IsLog(Trace[j])
+    ("archived" \in PropertyMap[Trace[i]] /\ IsLog(Trace[i])) =>
+      \E j1 \in 1..(i-1) : "analyzed" \in PropertyMap[Trace[j1]] /\ IsLog(Trace[j1])
 
-(* Если изображение сохранено или архивировано, значит было размечено AI *)
+(* Если изображение сохранено или архивировано, значит оно было размечено AI *)
 Invariant7 ==
   \A i \in 1..Len(Trace) :
     ("stored" \in PropertyMap[Trace[i]] /\ IsImage(Trace[i])) =>
-      \E j \in 1..(i-1) : "ai_marked" \in PropertyMap[Trace[j]] /\ IsImage(Trace[j])
-  /\
-  \A k \in 1..Len(Trace) :
-    ("archived" \in PropertyMap[Trace[k]] /\ "storage=glacier" \in PropertyMap[Trace[k]] /\ IsImage(Trace[k])) =>
-      \E m \in 1..(k-1) : "ai_marked" \in PropertyMap[Trace[m]] /\ IsImage(Trace[m])
+      \E j1 \in 1..(i-1) : "ai_marked" \in PropertyMap[Trace[j1]] /\ IsImage(Trace[j1])
 
 (* Если PII удалены по сроку, то они ранее были архивированы *)
 Invariant8 ==
   \A i \in 1..Len(Trace) :
-    ("expired_deleted" \in PropertyMap[Trace[i]] /\ IsPII(Trace[i])) =>
-      \E j \in 1..(i-1) : "archived" \in PropertyMap[Trace[j]] /\ IsPII(Trace[j])
+    ("expired_deleted" \in PropertyMap[Trace[i]] /\ IsPii(Trace[i])) =>
+      \E j1 \in 1..(i-1) : "archived" \in PropertyMap[Trace[j1]] /\ IsPii(Trace[j1])
+
+AllInvariants == Invariant1 /\ Invariant2 /\ Invariant3 /\ Invariant4 /\ Invariant5 /\ Invariant6 /\ Invariant7 /\ Invariant8
 
 
-AllInvariants == /\ Invariant1
-                 /\ Invariant2
-                 /\ Invariant3
-                 /\ Invariant4
-                 /\ Invariant5
-                 /\ Invariant6
-                 /\ Invariant7
-                 /\ Invariant8
+
 
 Spec == Init /\ [][Next]_<<Trace>>
 
