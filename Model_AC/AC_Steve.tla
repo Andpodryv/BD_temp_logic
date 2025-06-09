@@ -96,47 +96,55 @@ Init ==
   /\ AllAccessedStates = {}
   /\ AccessMap = [u \in {u.name : u \in U} |-> {}]
 
-
 DepartmentMatch(dept, props) ==
   \E p \in props :
-    \/ (dept = "SCADA" /\ p \in {"type=scada"})
-    \/ (dept = "SOC" /\ p \in {"type=log"})
-    \/ (dept = "PII" /\ p \in {"type=pii"})
-    \/ (dept = "IMG" /\ p \in {"type=image"})
-    \/ (dept = "SUPPORT" /\ p \in {"source=raw"})
+    \/ (dept = "SCADA" /\ p = "type=scada")
+    \/ (dept = "SOC" /\ p = "type=log")
+    \/ (dept = "PII" /\ p = "type=pii")
+    \/ (dept = "IMG" /\ p = "type=image")
+    \/ (dept = "SUPPORT" /\ p = "source=raw")
 
-StageAllowedForSCADA(props) ==
+Stage_SCADA_ShiftA(props) ==
   \E p \in props : p \in {"aggregated", "stored", "archived", "visualized", "reported"}
 
-RoleAllowedForPII(user, props) ==
-  \/ (user.role.role_name = "Senior")
-  \/ (user.role.role_name = "Junior"
-      /\ \E p \in props : p \in {"expired_deleted", "archived", "access_granted", "exported"})
+Stage_SCADA_ShiftB(props) ==
+  \E p \in props : p \in {"aggregated", "stored", "archived", "visualized", "reported"}
 
-StageAllowedForSupport(props) ==
+Stage_SCADA_ShiftC(props) ==
+  \E p \in props : p \in {"aggregated", "stored", "archived", "visualized", "reported"}
+
+Stage_PII_Junior(props) ==
+  \E p \in props : p \in {"archived", "access_granted", "expired_deleted", "exported"}
+
+Stage_SUPPORT_SupportWorker(props) ==
   \E p \in props : p \in {"source=raw", "anonymized", "filtered"}
 
 CanAccess(user, s, curtime) ==
   LET props == PropertyMap[s] IN
     \/ (user.role.role_name = "Admin" /\ DepartmentMatch(user.role.department, props))
-    \/ (user.role.department = "SCADA" /\ user.role.role_name \in {"ShiftA", "ShiftB", "ShiftC"} /\ DepartmentMatch("SCADA", props) /\ StageAllowedForSCADA(props) /\ curtime \in user.role.schedule)
-    \/ (user.role.department = "SOC" /\ user.role.role_name \in {"Analyst", "NightAnalyst"} /\ DepartmentMatch("SOC", props) /\ curtime \in user.role.schedule)
-    \/ (user.role.department = "PII" /\ DepartmentMatch("PII", props) /\ RoleAllowedForPII(user, props) /\ curtime \in user.role.schedule)
+    \/ (user.role.department = "SCADA" /\ user.role.role_name = "Admin" /\ DepartmentMatch("SCADA", props) /\ curtime \in user.role.schedule)
+    \/ (user.role.department = "SCADA" /\ user.role.role_name = "ShiftA" /\ DepartmentMatch("SCADA", props) /\ Stage_SCADA_ShiftA(props) /\ curtime \in user.role.schedule)
+    \/ (user.role.department = "SCADA" /\ user.role.role_name = "ShiftB" /\ DepartmentMatch("SCADA", props) /\ Stage_SCADA_ShiftB(props) /\ curtime \in user.role.schedule)
+    \/ (user.role.department = "SCADA" /\ user.role.role_name = "ShiftC" /\ DepartmentMatch("SCADA", props) /\ Stage_SCADA_ShiftC(props) /\ curtime \in user.role.schedule)
+    \/ (user.role.department = "SOC" /\ user.role.role_name = "Admin" /\ DepartmentMatch("SOC", props) /\ curtime \in user.role.schedule)
+    \/ (user.role.department = "SOC" /\ user.role.role_name = "Analyst" /\ DepartmentMatch("SOC", props) /\ curtime \in user.role.schedule)
+    \/ (user.role.department = "SOC" /\ user.role.role_name = "NightAnalyst" /\ DepartmentMatch("SOC", props) /\ curtime \in user.role.schedule)
+    \/ (user.role.department = "PII" /\ user.role.role_name = "Admin" /\ DepartmentMatch("PII", props) /\ curtime \in user.role.schedule)
+    \/ (user.role.department = "PII" /\ user.role.role_name = "Senior" /\ DepartmentMatch("PII", props) /\ curtime \in user.role.schedule)
+    \/ (user.role.department = "PII" /\ user.role.role_name = "Junior" /\ DepartmentMatch("PII", props) /\ Stage_PII_Junior(props) /\ curtime \in user.role.schedule)
+    \/ (user.role.department = "IMG" /\ user.role.role_name = "Admin" /\ DepartmentMatch("IMG", props) /\ curtime \in user.role.schedule)
     \/ (user.role.department = "IMG" /\ user.role.role_name = "ImageWorker" /\ DepartmentMatch("IMG", props) /\ curtime \in user.role.schedule)
-    \/ (user.role.department = "SUPPORT" /\ user.role.role_name = "SupportWorker" /\ DepartmentMatch("SUPPORT", props) /\ StageAllowedForSupport(props) /\ curtime \in user.role.schedule)
-
+    \/ (user.role.department = "SUPPORT" /\ user.role.role_name = "Admin" /\ DepartmentMatch("SUPPORT", props) /\ curtime \in user.role.schedule)
+    \/ (user.role.department = "SUPPORT" /\ user.role.role_name = "SupportWorker" /\ DepartmentMatch("SUPPORT", props) /\ Stage_SUPPORT_SupportWorker(props) /\ curtime \in user.role.schedule)
 RequestAccess(user, s) ==
   /\ AccessMap' = [AccessMap EXCEPT ![user.name] = @ \cup {s}]
   /\ AllAccessedStates' = AllAccessedStates \cup {s}
   /\ PrintT("States: " \o ToString(AllAccessedStates))
-  /\ UNCHANGED <<U, R>>
-
+  /\ UNCHANGED <<U, R>> 
 RequestAccessD ==
   \E u \in U :
     \E s \in States :
-      CanAccess(u, s, [Time |-> "Working"]) /\ ~(s \in AccessMap[u.name]) /\ RequestAccess(u, s)
-
-
+       CanAccess(u, s, [Time |-> "Working"]) /\ ~(s \in AccessMap[u.name]) /\ RequestAccess(u, s)
 Next == RequestAccessD
 
 TemporalAssumption == WF_vars(Next)
@@ -161,4 +169,4 @@ EventuallySomeAccess ==
 Invariants == Inv_AccessConsistency /\ Inv_OnlyValidStates /\ Inv_NoDuplicateAccess /\ Inv_AdminPower /\ EventuallySomeAccess
 
 =============================================================================
-\* Generated on Tue Jun  3 09:19:00 2025 by stand.py
+\* Generated on Sun Jun  8 08:32:54 2025 by stand.py

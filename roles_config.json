@@ -17,5 +17,49 @@
     "IMG_Worker": {"department": "IMG", "role_name": "ImageWorker", "schedule": ["Working"]},
     "Support_Admin": {"department": "SUPPORT", "role_name": "Admin", "schedule": ["Working", "NonWorking"]},
     "Support_Worker": {"department": "SUPPORT", "role_name": "SupportWorker", "schedule": ["Working"]}
+  },
+  "AccessRules": {
+    "SCADA": {
+      "types": ["type=scada"],
+      "roles": {
+        "Admin": "ALL",
+        "ShiftA": ["aggregated", "stored", "archived", "visualized", "reported"],
+        "ShiftB": ["aggregated", "stored", "archived", "visualized", "reported"],
+        "ShiftC": ["aggregated", "stored", "archived", "visualized", "reported"]
+      }
+    },
+    "SOC": {
+      "types": ["type=log"],
+      "roles": {
+        "Admin": "ALL",
+        "Analyst": "ALL",
+        "NightAnalyst": "ALL"
+      }
+    },
+    "PII": {
+      "types": ["type=pii"],
+      "roles": {
+        "Admin": "ALL",
+        "Senior": "ALL",
+        "Junior": ["archived", "access_granted", "expired_deleted", "exported"]
+      }
+    },
+    "IMG": {
+      "types": ["type=image"],
+      "roles": {
+        "Admin": "ALL",
+        "ImageWorker": "ALL"
+      }
+    },
+    "SUPPORT": {
+      "types": ["source=raw"],
+      "roles": {
+        "Admin": "ALL",
+        "SupportWorker": ["source=raw", "anonymized", "filtered"]
+      }
+    }
+  },
+  "AccessContext": {
+    "CurrentTime": "Working"
   }
 }

@@ -28,6 +28,8 @@ ROLES = role_config["Roles"]
 DEPARTMENTS = role_config["Departments"]
 TIMETYPE = role_config["TimeType"]
 ROLE_INITS = role_config["RoleInitializations"]
+ACCESS_CONTEXT = role_config.get("AccessContext", {})
+CURRENT_TIME = ACCESS_CONTEXT.get("CurrentTime", "Working")
 
 # Парсинг PropertyMap, Edges, States
 def parse_graph(graph_data):
@@ -65,47 +67,62 @@ def generate_role_init_defs():
         lines.append(f'{name} == [department |-> "{data["department"]}", role_name |-> "{data["role_name"]}", schedule |-> {{{sched_set}}}]')
     return "\n".join(lines)
 
-access_logic = '''
-DepartmentMatch(dept, props) ==
-  \E p \in props :
-    \/ (dept = "SCADA" /\ p \in {"type=scada"})
-    \/ (dept = "SOC" /\ p \in {"type=log"})
-    \/ (dept = "PII" /\ p \in {"type=pii"})
-    \/ (dept = "IMG" /\ p \in {"type=image"})
-    \/ (dept = "SUPPORT" /\ p \in {"source=raw"})
+def generate_access_logic(access_rules):
+    lines = []
 
-StageAllowedForSCADA(props) ==
-  \E p \in props : p \in {"aggregated", "stored", "archived", "visualized", "reported"}
+    lines.append("DepartmentMatch(dept, props) ==\n  \\E p \\in props :")
+    dm_cases = []
+    for dept, info in access_rules.items():
+        for dtype in info["types"]:
+            dm_cases.append(f'(dept = "{dept}" /\\ p = "{dtype}")')
+    lines.append("    \\/ " + "\n    \\/ ".join(dm_cases))
+    lines.append("")
 
-RoleAllowedForPII(user, props) ==
-  \/ (user.role.role_name = "Senior")
-  \/ (user.role.role_name = "Junior"
-      /\ \E p \in props : p \in {"expired_deleted", "archived", "access_granted", "exported"})
+    # Генерация StageAllowed
+    for dept, info in access_rules.items():
+        for role, allowed in info["roles"].items():
+            if allowed == "ALL":
+                continue  # ALL — доступен к любым стадиям
+            fname = f"Stage_{dept}_{role}".replace("-", "_")
+            stages = "{" + ", ".join(f'"{s}"' for s in allowed) + "}"
+            lines.append(f"{fname}(props) ==")
+            lines.append(f"  \\E p \\in props : p \\in {stages}\n")
 
-StageAllowedForSupport(props) ==
-  \E p \in props : p \in {"source=raw", "anonymized", "filtered"}
+    # Генерация главной функции CanAccess
+    lines.append("CanAccess(user, s, curtime) ==\n  LET props == PropertyMap[s] IN")
+    ca_lines = []
+    ca_lines.append(
+        '    \\/ (user.role.role_name = "Admin" /\\ DepartmentMatch(user.role.department, props))'
+    )
 
-CanAccess(user, s, curtime) ==
-  LET props == PropertyMap[s] IN
-    \/ (user.role.role_name = "Admin" /\ DepartmentMatch(user.role.department, props))
-    \/ (user.role.department = "SCADA" /\ user.role.role_name \in {"ShiftA", "ShiftB", "ShiftC"} /\ DepartmentMatch("SCADA", props) /\ StageAllowedForSCADA(props) /\ curtime \in user.role.schedule)
-    \/ (user.role.department = "SOC" /\ user.role.role_name \in {"Analyst", "NightAnalyst"} /\ DepartmentMatch("SOC", props) /\ curtime \in user.role.schedule)
-    \/ (user.role.department = "PII" /\ DepartmentMatch("PII", props) /\ RoleAllowedForPII(user, props) /\ curtime \in user.role.schedule)
-    \/ (user.role.department = "IMG" /\ user.role.role_name = "ImageWorker" /\ DepartmentMatch("IMG", props) /\ curtime \in user.role.schedule)
-    \/ (user.role.department = "SUPPORT" /\ user.role.role_name = "SupportWorker" /\ DepartmentMatch("SUPPORT", props) /\ StageAllowedForSupport(props) /\ curtime \in user.role.schedule)
+    for dept, info in access_rules.items():
+        for role, allowed in info["roles"].items():
+            condition = f'user.role.department = "{dept}" /\\ user.role.role_name = "{role}" /\\ DepartmentMatch("{dept}", props)'
+            if allowed != "ALL":
+                fname = f"Stage_{dept}_{role}".replace("-", "_")
+                condition += f" /\\ {fname}(props)"
+            condition += " /\\ curtime \\in user.role.schedule"
+            ca_lines.append(f"    \\/ ({condition})")
 
+    lines.append("\n".join(ca_lines))
+    return "\n".join(lines)
+
+
+access_logic = generate_access_logic(role_config["AccessRules"])
+access_logic += '''
 RequestAccess(user, s) ==
   /\ AccessMap' = [AccessMap EXCEPT ![user.name] = @ \cup {s}]
   /\ AllAccessedStates' = AllAccessedStates \cup {s}
   /\ PrintT("States: " \o ToString(AllAccessedStates))
-  /\ UNCHANGED <<U, R>>
+  /\ UNCHANGED <<U, R>> '''
 
+access_logic += f'''
 RequestAccessD ==
   \E u \in U :
     \E s \in States :
-      CanAccess(u, s, [Time |-> "Working"]) /\ ~(s \in AccessMap[u.name]) /\ RequestAccess(u, s)
+       CanAccess(u, s, [Time |-> "{CURRENT_TIME}"]) /\ ~(s \in AccessMap[u.name]) /\ RequestAccess(u, s)'''
 
-
+access_logic += '''
 Next == RequestAccessD
 
 TemporalAssumption == WF_vars(Next)
